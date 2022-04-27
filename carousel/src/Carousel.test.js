@@ -17,3 +17,35 @@ it("works when you click on the right arrow", function() {
   expect(queryByAltText("Photo by Richard Pasquarella on Unsplash")).not.toBeInTheDocument();
   expect(queryByAltText("Photo by Pratik Patel on Unsplash")).toBeInTheDocument();
 });
+
+it('works when you click on the left arrow', function() {
+  const { getByTestId, queryByAltText } = render(<Carousel />);
+  const leftArrow = getByTestId("left-arrow");
+  const rightArrow = getByTestId("right-arrow");
+
+  fireEvent.click(rightArrow);
+
+  fireEvent.click(leftArrow);
+  expect(queryByAltText('Photo by Richard Pasquarella on Unsplash')).toBeInTheDocument()
+  expect(queryByAltText('Photo by Josh Post on Unsplash')).not.toBeInTheDocument()
+})
+
+it('hide the left button when you on the first pic and the right button when you on the last pic', function() {
+  const { getByTestId } = render(<Carousel />);
+  const leftArrow = getByTestId("left-arrow");
+  const rightArrow = getByTestId("right-arrow");
+
+  expect(leftArrow).toHaveClass('hidden');
+  expect(rightArrow).not.toHaveClass('hidden');
+
+  fireEvent.click(rightArrow)
+
+  expect(leftArrow).not.toHaveClass('hidden');
+  expect(rightArrow).not.toHaveClass('hidden');
+
+  fireEvent.click(rightArrow)
+
+  expect(leftArrow).not.toHaveClass('hidden');
+  expect(rightArrow).toHaveClass('hidden');
+
+})
